@@ -1,0 +1,363 @@
+import pandas as pd
+import nltk
+from nltk.sentiment import SentimentIntensityAnalyzer
+import numpy as np
+import seaborn as sns
+
+anxiety_file_paths = ["/Users/farhanrashid/Downloads/dataofanxiety/post_2022_12_anxiety.csv",
+"/Users/farhanrashid/Downloads/dataofanxiety/post_2022_11_anxiety.csv",
+"/Users/farhanrashid/Downloads/dataofanxiety/post_2022_08_anxiety.csv",
+"/Users/farhanrashid/Downloads/dataofanxiety/post_2022_07_anxiety.csv",
+"/Users/farhanrashid/Downloads/dataofanxiety/post_2022_06_anxiety.csv",
+"/Users/farhanrashid/Downloads/dataofanxiety/post_2022_05_anxiety.csv",
+"/Users/farhanrashid/Downloads/dataofanxiety/post_2022_04_anxiety.csv",
+"/Users/farhanrashid/Downloads/dataofanxiety/post_2022_03_anxiety.csv",
+"/Users/farhanrashid/Downloads/dataofanxiety/post_2022_02_anxiety.csv",
+"/Users/farhanrashid/Downloads/dataofanxiety/post_2022_01_anxiety.csv"]
+
+all_unique_names_anxiety = set()
+
+
+depression_file_paths = ["/Users/farhanrashid/Downloads/dataofdeperession/post_2022_01_depression.csv",
+"/Users/farhanrashid/Downloads/dataofdeperession/post_2022_02_depression.csv",
+"/Users/farhanrashid/Downloads/dataofdeperession/post_2022_03_depression.csv",
+"/Users/farhanrashid/Downloads/dataofdeperession/post_2022_04_depression.csv",
+"/Users/farhanrashid/Downloads/dataofdeperession/post_2022_05_depression.csv",
+"/Users/farhanrashid/Downloads/dataofdeperession/post_2022_06_depression.csv",
+"/Users/farhanrashid/Downloads/dataofdeperession/post_2022_07_depression.csv",
+"/Users/farhanrashid/Downloads/dataofdeperession/post_2022_08_depression.csv",
+"/Users/farhanrashid/Downloads/dataofdeperession/post_2022_09_depression.csv",
+"/Users/farhanrashid/Downloads/dataofdeperession/post_2022_10_depression.csv",
+"/Users/farhanrashid/Downloads/dataofdeperession/post_2022_11_depression.csv",
+"/Users/farhanrashid/Downloads/dataofdeperession/post_2022_12_depression.csv"]
+
+all_unique_names_depression = set()
+
+
+selected_messages_anxiety = []
+selected_messages_depression = []
+for file_path in anxiety_file_paths:
+    df = pd.read_csv(file_path)
+    names = df[df['user_id'] != '[deleted]'] ['user_id']
+    unique_names_a= set(names.drop_duplicates().tolist())
+    all_unique_names_anxiety.update(unique_names_a)
+    selected_messages_anxiety_df = df[df['user_id'].isin(unique_names_a)]['message']
+    selected_messages_anxiety.extend(selected_messages_anxiety_df.tolist())  
+selected_messages_anxiety_df = pd.DataFrame(selected_messages_anxiety, columns=['message'])
+selected_messages_anxiety_df = selected_messages_anxiety_df.loc[selected_messages_anxiety_df['message'] != '[removed]']
+
+selected_messages_anxiety_df.head(6)
+
+for file_path in depression_file_paths:
+    df = pd.read_csv(file_path)
+    names = df[df['user_id'] != '[deleted]'] ['user_id']
+    unique_names_d = set(names.drop_duplicates().tolist())
+    all_unique_names_depression.update(unique_names_d)
+    selected_messages_depression_df = df[df['user_id'].isin(unique_names_a)]['message']
+    selected_messages_depression.extend(selected_messages_depression_df.tolist())
+selected_messages_depression_df = pd.DataFrame(selected_messages_depression, columns=['message'])
+selected_messages_depression_df = selected_messages_depression_df.loc[selected_messages_depression_df['message'] != '[removed]']
+
+selected_messages_depression_df.head(6)
+
+
+import pandas as pd
+
+selected_messages_anxiety = []
+user_ids_anxiety = []  # Keep track of user IDs
+
+for file_path in anxiety_file_paths:
+    df = pd.read_csv(file_path)
+    names = df[df['user_id'] != '[deleted]']['user_id']
+    unique_names_a = set(names.drop_duplicates().tolist())
+    all_unique_names_anxiety.update(unique_names_a)
+    selected_messages_anxiety_df = df[df['user_id'].isin(unique_names_a)][['user_id', 'message']]
+    selected_messages_anxiety.extend(selected_messages_anxiety_df['message'].tolist())
+    user_ids_anxiety.extend(selected_messages_anxiety_df['user_id'].tolist())
+
+selected_messages_anxiety_df = pd.DataFrame({'user_id': user_ids_anxiety, 'message': selected_messages_anxiety})
+selected_messages_anxiety_df = selected_messages_anxiety_df.loc[selected_messages_anxiety_df['message'] != '[removed]']
+
+depression_names = set(all_unique_names_depression)
+anxiety_names = set(all_unique_names_anxiety)
+common_names = depression_names.intersection(anxiety_names)
+only_anxiety_names = all_unique_names_anxiety - common_names
+print(len(only_anxiety_names))
+
+messages_of_only_anxiety_df = selected_messages_anxiety_df[selected_messages_anxiety_df['user_id'].isin(only_anxiety_names)]
+
+print(messages_of_only_anxiety_df)
+
+
+import pandas as pd
+
+selected_messages_anxiety = []
+user_ids_anxiety = []  # Keep track of user IDs
+
+for file_path in anxiety_file_paths:
+    df = pd.read_csv(file_path)
+    names = df[df['user_id'] != '[deleted]']['user_id']
+    unique_names_a = set(names.drop_duplicates().tolist())
+    all_unique_names_anxiety.update(unique_names_a)
+    selected_messages_anxiety_df = df[df['user_id'].isin(unique_names_a)][['user_id', 'message']]
+    selected_messages_anxiety.extend(selected_messages_anxiety_df['message'].tolist())
+    user_ids_anxiety.extend(selected_messages_anxiety_df['user_id'].tolist())
+
+selected_messages_anxiety_df = pd.DataFrame({'user_id': user_ids_anxiety, 'message': selected_messages_anxiety})
+selected_messages_anxiety_df = selected_messages_anxiety_df.loc[selected_messages_anxiety_df['message'] != '[removed]']
+
+depression_names = set(all_unique_names_depression)
+anxiety_names = set(all_unique_names_anxiety)
+common_names = depression_names.intersection(anxiety_names)
+only_anxiety_names = all_unique_names_anxiety - common_names
+print(len(only_anxiety_names))
+
+messages_of_only_anxiety_df = selected_messages_anxiety_df[selected_messages_anxiety_df['user_id'].isin(only_anxiety_names)]
+
+# Reset the index to remove the old index and reassign a default integer index
+messages_of_only_anxiety_df.reset_index(drop=True, inplace=True)
+
+print(messages_of_only_anxiety_df)
+
+!pip install wordcloud
+from wordcloud import WordCloud
+messages_of_only_anxiety_df['message'] = messages_of_only_anxiety_df['message'].astype(str)
+long_string = ','.join(list(messages_of_only_anxiety_df['message'].values))
+wordcloud = WordCloud(background_color="white", max_words=5000, contour_width=3, contour_color='steelblue')
+wordcloud.generate(long_string)
+wordcloud.to_image()
+
+
+!pip install wordcloud
+from wordcloud import WordCloud
+selected_messages_anxiety_df['message'] = selected_messages_anxiety_df['message'].astype(str)
+long_string = ','.join(list(selected_messages_anxiety_df['message'].values))
+wordcloud = WordCloud(background_color="white", max_words=5000, contour_width=3, contour_color='steelblue')
+wordcloud.generate(long_string)
+wordcloud.to_image()
+
+
+import gensim
+from gensim.utils import simple_preprocess
+import nltk
+nltk.download('stopwords')
+from nltk.corpus import stopwords
+
+
+stop_words = stopwords.words('english')
+stop_words.extend(['from', 'subject', 're', 'edu', 'use'])
+def sent_to_words(sentences):
+    for sentence in sentences:
+        yield(gensim.utils.simple_preprocess(str(sentence), deacc=True))
+def remove_stopwords(texts):
+    return [[word for word in simple_preprocess(str(doc)) 
+             if word not in stop_words] for doc in texts]
+
+data_of_anxiety = selected_messages_anxiety_df['message'].tolist()
+data_words_of_anxiety = list(sent_to_words(data_of_anxiety))
+data_words_of_anxiety = remove_stopwords(data_words_of_anxiety)
+print(data_words_of_anxiety[:5])
+
+stop_words = stopwords.words('english')
+stop_words.extend(['from', 'subject', 're', 'edu', 'use'])
+def sent_to_words(sentences):
+    for sentence in sentences:
+        yield(gensim.utils.simple_preprocess(str(sentence), deacc=True))
+def remove_stopwords(texts):
+    return [[word for word in simple_preprocess(str(doc)) 
+             if word not in stop_words] for doc in texts]
+
+data_of_only_anxiety = messages_of_only_anxiety_df['message'].tolist()
+data_words_of_only_anxiety= list(sent_to_words(data_of_only_anxiety))
+data_words_of_only_anxiety = remove_stopwords(data_words_of_only_anxiety)
+print(data_words_of_only_anxiety[:5])
+
+stop_words = stopwords.words('english')
+stop_words.extend(['from', 'subject', 're', 'edu', 'use', 'https', 'www'])
+def sent_to_words(sentences):
+    for sentence in sentences:
+        yield(gensim.utils.simple_preprocess(str(sentence), deacc=True))
+def remove_stopwords(texts):
+    return [[word for word in simple_preprocess(str(doc)) 
+             if word not in stop_words] for doc in texts]
+
+
+data_of_depression = selected_messages_depression_df['message'].tolist()
+data_words_of_depression = list(sent_to_words(data_of_depression))
+data_words_of_depression = remove_stopwords(data_words_of_depression)
+print(data_words_of_depression[:5])
+
+stop_words = stopwords.words('english')
+stop_words.extend(['from', 'subject', 're', 'edu', 'use', 'https', 'www'])
+def sent_to_words(sentences):
+    for sentence in sentences:
+        yield(gensim.utils.simple_preprocess(str(sentence), deacc=True))
+def remove_stopwords(texts):
+    return [[word for word in simple_preprocess(str(doc)) 
+             if word not in stop_words] for doc in texts]
+
+data_of_anxiety = selected_messages_anxiety_df['message'].tolist()
+data_words_of_anxiety = list(sent_to_words(data_of_anxiety))
+data_words_of_anxiety = remove_stopwords(data_words_of_anxiety)
+print(data_words_of_anxiety[:1][0][:10])
+
+import gensim.corpora as corpora
+id2word = corpora.Dictionary(data_words_of_depression)
+texts_of_depression = data_words_of_depression
+corpus_depression = [id2word.doc2bow(text) for text in texts_of_depression]
+print(corpus_depression[:1][0][:30])
+
+import gensim.corpora as corpora
+id2word = corpora.Dictionary(data_words_of_anxiety)
+texts_of_anxiety = data_words_of_anxiety
+corpus_anxiety = [id2word.doc2bow(text) for text in texts_of_anxiety]
+print(corpus_anxiety[:1][0][:30])
+
+import gensim.corpora as corpora
+id2word = corpora.Dictionary(data_words_of_only_anxiety)
+texts_of_only_anxiety = data_words_of_only_anxiety
+corpus_only_anxiety = [id2word.doc2bow(text) for text in texts_of_only_anxiety]
+print(corpus_only_anxiety[:1][0][:30])
+
+import gensim
+from gensim import corpora
+from pprint import pprint
+num_topics = 30
+lda_model = gensim.models.LdaMulticore(corpus=corpus_anxiety,
+                                       id2word=id2word,
+                                       num_topics=num_topics)
+pprint(lda_model.print_topics())
+doc_lda = lda_model[corpus_anxiety]
+
+
+import gensim
+from gensim import corpora
+from pprint import pprint
+num_topics = 30
+lda_model = gensim.models.LdaMulticore(corpus= corpus_depression,
+                                       id2word=id2word,
+                                       num_topics=num_topics)
+pprint(lda_model.print_topics())
+doc_lda = lda_model[corpus_depression]
+
+
+import gensim
+from gensim import corpora
+from pprint import pprint
+num_topics = 30
+lda_model = gensim.models.LdaMulticore(corpus=corpus_only_anxiety,
+                                       id2word=id2word,
+                                       num_topics=num_topics)
+pprint(lda_model.print_topics())
+doc_lda = lda_model[corpus_only_anxiety]
+
+
+!pip install pyLDAvis
+import pyLDAvis.gensim
+import os
+import pickle 
+import pyLDAvis
+
+import os
+import pyLDAvis.gensim
+import pickle 
+import pyLDAvis
+
+# Set the number of cores to 1 to avoid pickling issues
+num_cores = 1
+pyLDAvis.enable_notebook()
+
+# Create the 'results' directory if it doesn't exist
+results_dir = './results/'
+os.makedirs(results_dir, exist_ok=True)
+
+# Prepare the data for visualization and save it to a file
+LDAvis_data_filepath = os.path.join(results_dir, 'ldavis_prepared_'+str(num_topics))
+if 1 == 1:
+    LDAvis_prepared = pyLDAvis.gensim.prepare(lda_model, corpus_depression, id2word, n_jobs=num_cores)
+    with open(LDAvis_data_filepath, 'wb') as f:
+        pickle.dump(LDAvis_prepared, f)
+
+# Load the pre-prepared pyLDAvis data from the file
+with open(LDAvis_data_filepath, 'rb') as f:
+    LDAvis_prepared = pickle.load(f)
+
+# Save the interactive HTML visualization to a file
+html_filepath = os.path.join(results_dir, 'ldavis_prepared_'+ str(num_topics) +'.html')
+pyLDAvis.save_html(LDAvis_prepared, html_filepath)
+
+# Display the prepared pyLDAvis data
+LDAvis_prepared
+
+
+import os
+import pyLDAvis.gensim
+import pickle 
+import pyLDAvis
+
+num_cores = 1
+pyLDAvis.enable_notebook()
+
+results_dir = './results/'
+os.makedirs(results_dir, exist_ok=True)
+
+LDAvis_data_filepath = os.path.join(results_dir, 'ldavis_prepared_'+str(num_topics))
+if 1 == 1:
+    LDAvis_prepared = pyLDAvis.gensim.prepare(lda_model, corpus_only_anxiety, id2word, n_jobs=num_cores)
+    with open(LDAvis_data_filepath, 'wb') as f:
+        pickle.dump(LDAvis_prepared, f)
+        
+ 
+with open(LDAvis_data_filepath, 'rb') as f:
+    LDAvis_prepared = pickle.load(f)
+    
+html_filepath = os.path.join(results_dir, 'ldavis_prepared_'+ str(num_topics) +'.html')
+pyLDAvis.save_html(LDAvis_prepared, html_filepath)
+LDAvis_prepared
+
+
+import os
+import pyLDAvis.gensim
+import pickle 
+import pyLDAvis
+
+num_cores = 1
+pyLDAvis.enable_notebook()
+
+results_dir = './results/'
+os.makedirs(results_dir, exist_ok=True)
+
+LDAvis_data_filepath = os.path.join(results_dir, 'ldavis_prepared_'+str(num_topics))
+if 1 == 1:
+    LDAvis_prepared = pyLDAvis.gensim.prepare(lda_model, corpus_anxiety, id2word, n_jobs=num_cores)
+    with open(LDAvis_data_filepath, 'wb') as f:
+        pickle.dump(LDAvis_prepared, f)
+        
+ 
+with open(LDAvis_data_filepath, 'rb') as f:
+    LDAvis_prepared = pickle.load(f)
+    
+html_filepath = os.path.join(results_dir, 'ldavis_prepared_'+ str(num_topics) +'.html')
+pyLDAvis.save_html(LDAvis_prepared, html_filepath)
+LDAvis_prepared
+
+
+!pip install textblob
+from textblob import TextBlob
+
+
+def get_sentiment_score(message):
+    blob  =TextBlob(message)
+    return blob.sentiment.polarity
+selected_messages_anxiety_df['sentiment_score'] = selected_messages_anxiety_df['message'].apply(get_sentiment_score)
+overall_sentiment_score_anxiety = selected_messages_anxiety_df['sentiment_score'].mean()
+selected_messages_depression_df['sentiment_score'] = selected_messages_depression_df['message'].apply(get_sentiment_score)
+overall_sentiment_score_depression = selected_messages_depression_df['sentiment_score'].mean()
+print(overall_sentiment_score_anxiety)
+print(overall_sentiment_score_depression)
+
+selected_messages_depression_df['message'] = selected_messages_depression_df['message'].astype(str)
+long_string = ','.join(list(selected_messages_depression_df['message'].values))
+wordcloud = WordCloud(background_color="white", max_words=5000, contour_width=3, contour_color='steelblue')
+wordcloud.generate(long_string)
+wordcloud.to_image()
