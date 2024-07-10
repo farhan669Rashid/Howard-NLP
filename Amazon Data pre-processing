@@ -1,0 +1,63 @@
+import pandas as pd
+df = pd.read_json('/Users/farhanrashid/Downloads/Amazon Data file(Books)/AMAZON_FASHION.json', lines=True)
+df.head(10)
+
+dataset_1_star = df[df['overall'] == 1]
+dataset_2_star = df[df['overall'] == 2]
+dataset_4_star = df[df['overall'] == 4]
+dataset_5_star = df[df['overall'] == 5]
+dataset_1_star.to_csv('/Users/farhanrashid/Downloads/dataset_1_star.csv', index=False)
+dataset_2_star.to_csv('/Users/farhanrashid/Downloads/dataset_2_star.csv', index=False)
+dataset_4_star.to_csv('/Users/farhanrashid/Downloads/dataset_4_star.csv', index=False)
+dataset_5_star.to_csv('/Users/farhanrashid/Downloads/dataset_5_star.csv', index=False)
+
+print("The datasets have been saved as CSV files in the Downloads folder.")
+
+dataset_1_star.shape
+dataset_2_star.shape
+dataset_4_star.shape
+dataset_5_star.shape
+
+Common_reviews_1and2_id = set(dataset_1_star['reviewerID']).intersection(set(dataset_2_star['reviewerID']))
+Common_reviews_1and2 = df[df['reviewerID'].isin(Common_reviews_1and2_id)]
+
+Common_reviews_1and2.head(20)
+
+
+
+# Find common reviewer IDs between 1-star and 2-star datasets
+Common_reviews_1and2_id = set(dataset_1_star['reviewerID']).intersection(set(dataset_2_star['reviewerID']))
+
+# Filter the original dataset for reviews from these common reviewers
+Common_reviews_1and2 = df[df['reviewerID'].isin(Common_reviews_1and2_id)]
+
+# Now, limit this dataset to only 1-star and 2-star reviews
+Common_reviews_1and2 = Common_reviews_1and2[Common_reviews_1and2['overall'].isin([1, 2])]
+
+# Display the first 20 entries
+Common_reviews_1and2.head(20)
+Common_reviews_1and2.shape
+
+
+Common_reviews_1and2.to_csv('/Users/farhanrashid/Downloads/common_reviews_1_and_2_stars.csv', index=False)
+
+print("The file has been saved to '/Users/farhanrashid/Downloads/common_reviews_1_and_2_stars.csv'")
+
+
+# Find common reviewer IDs between 1-star and 2-star datasets
+Common_reviews_4and5_id = set(dataset_4_star['reviewerID']).intersection(set(dataset_5_star['reviewerID']))
+
+# Filter the original dataset for reviews from these common reviewers
+Common_reviews_4and5 = df[df['reviewerID'].isin(Common_reviews_4and5_id)]
+
+# Now, limit this dataset to only 1-star and 2-star reviews
+Common_reviews_4and5 = Common_reviews_4and5[Common_reviews_4and5['overall'].isin([4, 5])]
+
+Common_reviews_4and5.head(20)
+
+Common_reviews_4and5.shape
+
+Common_reviews_4and5.to_csv('/Users/farhanrashid/Downloads/common_reviews_4_and_5_stars.csv', index=False)
+
+print("The file has been saved to '/Users/farhanrashid/Downloads/common_reviews_4_and_5_stars.csv'")
+
