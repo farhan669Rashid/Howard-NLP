@@ -1,0 +1,136 @@
+import pandas as pd
+import numpy as np
+import json
+import os
+from google.colab import files
+
+!  gdown --id 1Qm6qk_YRAyrB6B83JmlfgN1DRnNlJ2-o
+
+data = []
+with open('yelp_academic_dataset_review.json', 'r') as file:
+ for line in file:
+        json_obj = json.loads(line)
+        data.append(json_obj)
+review_df = pd.DataFrame(data)
+
+restaurant_1_star_df = pd.read_csv('restaurant_1_star.csv')
+restaurant_1_and_half_star_df = pd.read_csv('restaurant_1_and_half_star.csv')
+restaurant_2_star_df = pd.read_csv('restaurant_2_star.csv')
+restaurant_2_and_half_star_df = pd.read_csv('restaurant_2_and_half_star.csv')
+restaurant_4_star_df = pd.read_csv('restaurant_4_star.csv')
+restaurant_4_and_half_star_df = pd.read_csv('restaurant_4_and_half_star.csv')
+restaurant_5_star_df = pd.read_csv('restaurant_5_star.csv')
+
+clinic_1_star_df = pd.read_csv('clinic_1_star.csv')
+clinic_1_and_half_star_df = pd.read_csv('clinic_1_and_half_star.csv')
+clinic_2_star_df = pd.read_csv('clinic_2_star.csv')
+clinic_2_and_half_star_df = pd.read_csv('clinic_2_and_half_star.csv')
+clinic_4_star_df = pd.read_csv('clinic_4_star.csv')
+clinic_4_and_half_star_df = pd.read_csv('clinic_4_and_half_star.csv')
+clinic_5_star_df = pd.read_csv('clinic_5_star.csv')
+
+hospital_1_star_df = pd.read_csv('hospital_1_star.csv')
+hospital_1_and_half_star_df = pd.read_csv('hospital_1_and_half_star.csv')
+hospital_2_star_df = pd.read_csv('hospital_2_star.csv')
+hospital_2_and_half_star_df = pd.read_csv('hospital_2_and_half_star.csv')
+hospital_4_star_df = pd.read_csv('hospital_4_star.csv')
+hospital_4_and_half_star_df = pd.read_csv('hospital_4_and_half_star.csv')
+hospital_5_star_df = pd.read_csv('hospital_5_star.csv')
+
+from google.colab import drive
+drive.mount('/content/drive')
+
+output_directory = "/Users/farhanrashid/Downloads"
+if not os.path.exists(output_directory):
+    os.makedirs(output_directory)
+
+restaurant_1_star_review_file = os.path.join(output_directory, "restaurant_1_star_review_file.csv")
+restaurant_1_star_review_df = review_df[review_df['business_id'].isin(restaurant_1_star_df['business_id']) & review_df['stars'].isin(restaurant_1_star_df['stars'])]
+restaurant_1_and_half_star_review_file = os.path.join(output_directory, "restaurant_1_and_half_star_review_file.csv")
+restaurant_1_and_half_star_review_df = review_df[review_df['business_id'].isin(restaurant_1_and_half_star_df['business_id']) & review_df['stars'].isin(restaurant_1_and_half_star_df['stars'])]
+restaurant_2_star_review_file = os.path.join(output_directory, "restaurant_2_star_review_file.csv")
+restaurant_2_star_review_df = review_df[review_df['business_id'].isin(restaurant_2_star_df['business_id']) & review_df['stars'].isin(restaurant_2_star_df['stars'])]
+restaurant_2_and_half_star_review_file = os.path.join(output_directory, "restaurant_2_and_half_star_review_file.csv")
+restaurant_2_and_half_star_review_df = review_df[review_df['business_id'].isin(restaurant_2_and_half_star_df['business_id']) & review_df['stars'].isin(restaurant_2_and_half_star_df['stars'])]
+restaurant_4_star_review_file = os.path.join(output_directory, "restaurant_4_star_review_file.csv")
+restaurant_4_star_review_df = review_df[review_df['business_id'].isin(restaurant_4_star_df['business_id']) & review_df['stars'].isin(restaurant_4_star_df['stars'])]
+restaurant_4_and_half_star_review_file = os.path.join(output_directory, "restaurant_4_and_half_star_review_file.csv")
+restaurant_4_and_half_star_review_df = review_df[review_df['business_id'].isin(restaurant_4_and_half_star_df['business_id']) & review_df['stars'].isin(restaurant_4_and_half_star_df['stars'])]
+restaurant_5_star_review_file = os.path.join(output_directory, "restaurant_5_star_review_file.csv")
+restaurant_5_star_review_df = review_df[review_df['business_id'].isin(restaurant_5_star_df['business_id']) & review_df['stars'].isin(restaurant_5_star_df['stars'])]
+
+restaurant_1_star_review_df.to_csv(restaurant_1_star_review_file, index=False)
+restaurant_2_star_review_df.to_csv(restaurant_2_star_review_file, index=False)
+restaurant_4_star_review_df.to_csv(restaurant_4_star_review_file, index=False)
+restaurant_5_star_review_df.to_csv(restaurant_5_star_review_file, index=False)
+restaurant_1_and_half_star_review_df.to_csv(restaurant_1_and_half_star_review_file, index=False)
+restaurant_2_and_half_star_review_df.to_csv(restaurant_2_and_half_star_review_file, index=False)
+restaurant_4_and_half_star_review_df.to_csv(restaurant_4_and_half_star_review_file, index=False)
+
+output_directory = "/Users/farhanrashid/Downloads"
+if not os.path.exists(output_directory):
+    os.makedirs(output_directory)
+
+clinic_1_star_review_file = os.path.join(output_directory, "clinic_1_star_review_file.csv")
+clinic_1_star_review_df = review_df[review_df['business_id'].isin(clinic_1_star_df['business_id']) & review_df['stars'].isin(clinic_1_star_df['stars'])]
+clinic_1_and_half_star_review_file = os.path.join(output_directory, "clinic_1_and_half_star_review_file.csv")
+clinic_1_and_half_star_review_df = review_df[review_df['business_id'].isin(clinic_1_and_half_star_df['business_id']) & review_df['stars'].isin(clinic_1_and_half_star_df['stars'])]
+clinic_2_star_review_file = os.path.join(output_directory, "clinic_2_star_review_file.csv")
+clinic_2_star_review_df = review_df[review_df['business_id'].isin(clinic_2_star_df['business_id']) & review_df['stars'].isin(clinic_2_star_df['stars'])]
+clinic_2_and_half_star_review_file = os.path.join(output_directory, "clinic_2_and_half_star_review_file.csv")
+clinic_2_and_half_star_review_df = review_df[review_df['business_id'].isin(clinic_2_and_half_star_df['business_id']) & review_df['stars'].isin(clinic_2_and_half_star_df['stars'])]
+clinic_4_star_review_file = os.path.join(output_directory, "clinic_4_star_review_file.csv")
+clinic_4_star_review_df = review_df[review_df['business_id'].isin(clinic_4_star_df['business_id']) & review_df['stars'].isin(clinic_4_star_df['stars'])]
+clinic_4_and_half_star_review_file = os.path.join(output_directory, "clinic_4_and_half_star_review_file.csv")
+clinic_4_and_half_star_review_df = review_df[review_df['business_id'].isin(clinic_4_and_half_star_df['business_id']) & review_df['stars'].isin(clinic_4_and_half_star_df['stars'])]
+clinic_5_star_review_file = os.path.join(output_directory, "clinic_5_star_review_file.csv")
+clinic_5_star_review_df = review_df[review_df['business_id'].isin(clinic_5_star_df['business_id']) & review_df['stars'].isin(clinic_5_star_df['stars'])]
+
+clinic_1_star_review_df.to_csv(clinic_1_star_review_file, index=False)
+clinic_2_star_review_df.to_csv(clinic_2_star_review_file, index=False)
+clinic_4_star_review_df.to_csv(clinic_4_star_review_file, index=False)
+clinic_5_star_review_df.to_csv(clinic_5_star_review_file, index=False)
+clinic_1_and_half_star_review_df.to_csv(clinic_1_and_half_star_review_file, index=False)
+clinic_2_and_half_star_review_df.to_csv(clinic_2_and_half_star_review_file, index=False)
+clinic_4_and_half_star_review_df.to_csv(clinic_4_and_half_star_review_file, index=False)
+
+from google.colab import files
+files
+files.download('/Users/farhanrashid/Downloads/restaurant_4_star_review_file.csv')
+
+output_directory = "/Users/farhanrashid/Downloads"
+if not os.path.exists(output_directory):
+    os.makedirs(output_directory)
+
+
+hospital_1_star_review_file = os.path.join(output_directory, "hospital_1_star_review_file.csv")
+hospital_1_star_review_df = review_df[review_df['business_id'].isin(hospital_1_star_df['business_id']) & review_df['stars'].isin(hospital_1_star_df['stars'])]
+hospital_1_and_half_star_review_file = os.path.join(output_directory, "hospital_1_and_half_star_review_file.csv")
+hospital_1_and_half_star_review_df = review_df[review_df['business_id'].isin(hospital_1_and_half_star_df['business_id']) & review_df['stars'].isin(hospital_1_and_half_star_df['stars'])]
+hospital_2_star_review_file = os.path.join(output_directory, "hospital_2_star_review_file.csv")
+hospital_2_star_review_df = review_df[review_df['business_id'].isin(hospital_2_star_df['business_id']) &review_df['stars'].isin(hospital_2_star_df['stars'])]
+hospital_2_and_half_star_review_file = os.path.join(output_directory, "hospital_2_and_half_star_review_file.csv")
+hospital_2_and_half_star_review_df = review_df[review_df['business_id'].isin(hospital_2_and_half_star_df['business_id']) & review_df['stars'].isin(hospital_2_and_half_star_df['stars'])]
+hospital_4_star_review_file = os.path.join(output_directory, "hospital_4_star_review_file.csv")
+hospital_4_star_review_df = review_df[review_df['business_id'].isin(hospital_4_star_df['business_id']) & review_df['stars'].isin(hospital_4_star_df['stars'])]
+hospital_4_and_half_star_review_file = os.path.join(output_directory, "hospital_4_and_half_star_review_file.csv")
+hospital_4_and_half_star_review_df = review_df[review_df['business_id'].isin(hospital_4_and_half_star_df['business_id']) & review_df['stars'].isin(hospital_4_and_half_star_df['stars'])]
+hospital_5_star_review_file = os.path.join(output_directory, "hospital_5_star_review_file.csv")
+hospital_5_star_review_df = review_df[review_df['business_id'].isin(hospital_5_star_df['business_id']) & review_df['stars'].isin(hospital_5_star_df['stars'])]
+
+
+hospital_1_star_review_df.to_csv(hospital_1_star_review_file, index=False)
+hospital_2_star_review_df.to_csv(hospital_2_star_review_file, index=False)
+hospital_4_star_review_df.to_csv(hospital_4_star_review_file, index=False)
+hospital_5_star_review_df.to_csv(hospital_5_star_review_file, index=False)
+hospital_1_and_half_star_review_df.to_csv(hospital_1_and_half_star_review_file, index=False)
+hospital_2_and_half_star_review_df.to_csv(hospital_2_and_half_star_review_file, index=False)
+hospital_4_and_half_star_review_df.to_csv(hospital_4_and_half_star_review_file, index=False)
+
+output_directory = "/Users/farhanrashid/Downloads"
+if not os.path.exists(output_directory):
+    os.makedirs(output_directory)
+
+clinic_1_star_review_file = os.path.join(output_directory, "clinic_1_star_review_file.csv")
+clinic_1_star_review_df = review_df[review_df['business_id'].isin(clinic_1_star_df['business_id']) & review_df['stars'].isin(clinic_1_star_df['stars'])]
+clinic_1_star_review_df.to_csv(clinic_1_star_review_file, index=False)
